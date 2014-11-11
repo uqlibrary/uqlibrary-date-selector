@@ -1,0 +1,48 @@
+@import "../uqlibrary-elements/resources/theme/element";
+
+:host {
+    display: block;
+}
+
+/* To ensure your styling works under the Shadow DOM polyfill, see
+   www.polymer-project.org/docs/polymer/styling.html#directives */
+polyfill-next-selector {
+    content: ':host > h2';
+}
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.items{
+  max-width: 750px;
+  margin: 0 40px;
+  list-style-type: none;
+  font-size: 0;
+  line-height: 0;
+}
+
+
+.item{
+  text-align: center;
+  display: inline-block;
+  min-width: 90px;
+  padding: 15px 10px;
+  font-size: 13px;
+  line-height: 1;
+  text-transform: uppercase;
+  border: 1px solid #efefef;
+}
+
+.item.occupied {
+    background-color: red;
+    color: #fdfdfd;
+}
+
+.item.selected {
+    background-color: teal;
+    color: #fdfdfd;
+}
+

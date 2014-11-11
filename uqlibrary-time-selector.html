@@ -8,142 +8,75 @@ Element provides slide-show display for paper checkboxes, touch enabled
 ##### Example
 
     <uqlibrary-time-selector></uqlibrary-time-selector>
+     <script>
+      (function () {
+
+        window.addEventListener('polymer-ready', function() {
+            var time_selector = document.querySelector('uqlibrary-tim-selector');
+
+            time_selector.timeslots = [
+                {
+                    startTime : '8:00 am',
+                    selectable: true,
+                    selected: false
+                },
+                {
+                    startTime : '8:30 am',
+                    selectable: true,
+                    selected: false
+                }
+            ];
+            }());
+    </script>
 
 @element uqlibrary-time-selector
-@blurb Element provides slide-show display for paper checkboxes, touch enabled
+@blurb Element provides display of time slots, indicating available and busy time slots, with ability to select time slots
 @status alpha
 @homepage http://uqlibrary.github.io/uqlibrary-date-selector
 -->
 
-<polymer-element name="uqlibrary-time-selector" attributes="timeslots displayScrollButtons">
+<polymer-element name="uqlibrary-time-selector" attributes="bookingTimeslots">
 
   <template>
 
     <link rel="stylesheet" href="uqlibrary-time-selector.css">
 
+    <ul class="items" touch-action="pan-y" on-touchmove="{{ slideTouch }}">
 
-        <ul class="items" touch-action="pan-y" on-touchmove="{{ slideTouch }}">
+      <template repeat="{{timeslot, index in bookingTimeslots}}">
 
-          <template repeat="{{timeslot, index in timeslots}}">
+          <li class="item {{ timeslot | setStatusClass}}" data-index="{{index}}">
+              <div class="timeslot-title">{{timeslot.startTime}}</div>
+          </li>
 
-              <li class="item {{ {selectable: timeslot.selectable, selected: timeslot.selected} | timeslotStatusClass}}" data-index="{{index}}">
+      </template>
 
-                  <div class="timeslot-title">{{timeslot.startTime}}</div>
-                  <div class="timeslot-selector">
-                  <!--
-
-                      <paper-checkbox checked='{{timeslot.selected}}' disabled="{{!timeslot.selectable}}"></paper-checkbox>
-                  -->
-                  </div>
-              </li>
-
-          </template>
-
-        </ul>
+    </ul>
 
   </template>
 
   <script>
+
     Polymer({
+
     /**
-     * The `timeslots` attribute is an array of times slots to display
+     * The `bookingTimeslots` attribute is an array of objects - time slots to display
      *
-     * @property timeslots
+     * @property bookingTimeslots
      * @type array
      */
-     timeslotStatusClass: function(status) {
+
+     setStatusClass: function(status) {
         return status.selectable ? (status.selected ? 'selected': '') : 'occupied';
      },
      
-      timeslotsChanged: function(oldValue, newValue) {
-
-          console.log ("timeslotsChanged: " + newValue.length);
-
+      bookingTimeslotsChanged: function(oldValue, newValue) {
+          console.log ("bookingTimeslotsChanged: " + newValue.length);
       },
 
       created: function() {
-        //TODO: hide scroll buttons on mibile device
-        this.displayScrollButtons = true;
-
-        this.timeslots = [];
-        this.offset = 0;
-        this.transform = 'transform'; //check if transform will work or use Modernizr.prefixed('transform');
-        
-        this.lastTimeScrollPosition = null;
-      },
-
-      getGesturePointFromEvent : function(evt) {
-        var point = {};
-
-        if(evt.targetTouches) {
-          point.x = evt.targetTouches[0].clientX;
-          point.y = evt.targetTouches[0].clientY;
-        } else {
-          // Either Mouse event or Pointer Event
-          point.x = evt.clientX;
-          point.y = evt.clientY;
-        }
-
-        return point;
-      },
-
-      slideTouch: function(evt) {
-
-        var itemCount = this.timeslots.length;
-        var scrolleWidth = this.$.wrap.querySelector('.scroller').clientWidth;
-
-        if (!this.lastTimeScrollPosition)
-          this.lastTimeScrollPosition = this.getGesturePointFromEvent(evt).x;
-
-        //TODO: calculate scrolling position
-        var delta = (this.getGesturePointFromEvent(evt).x - this.lastTimeScrollPosition);
-
-        this.offset += delta;
-        console.log('offset: ' + this.offset + ' delta:' + delta + " direction: touch");
-        console.log('new x: ' + this.getGesturePointFromEvent(evt).x + ' old x:' + this.lastTimeScrollPosition);
-        this.setTransform();
-
-        //update last time scroll position
-        this.lastTimeScrollPosition = this.getGesturePointFromEvent(evt).x;
-
-      },
-
-      slidePrevious: function(evt) {
-        //TODO: calculate scrolling position
-        var delta = 170;
-        this.offset += delta;
-
-        console.log('offset: ' + this.offset + ' delta:' + delta + " direction: previous");
-
-        this.setTransform();
-      },
-
-      slideNext: function(evt) {
-        //TODO: calculate scrolling position
-        var delta = -170;
-        this.offset += delta;
-
-        console.log('offset: ' + this.offset + ' delta:' + delta + " direction: next");
-
-        this.setTransform();
-      },
-
-      setTransform: function() {
-        //TODO: check boundaries of .items vs .scroller not to scroll over
-
-        //this.offset = this.offset > 0 ? 0 : this.offset;
-        //this.offset = this.offset < -(this.$.wrap.querySelector('.items').clientWidth) ?  -this.$.wrap.querySelector('.items').clientWidth : this.offset;
-
-        console.log('offset: ' + this.offset);
-
-        //this.$.wrap.querySelector('.items').style[this.transform] = 'translate3d(' + (this.offset) + 'p x,0,0)';
-        this.$.wrap.querySelector('.items').style.msTransform = 'translateX(' + (this.offset) + 'px)';
-        this.$.wrap.querySelector('.items').style.webkitTransform = 'translateX(' + (this.offset) + 'px)';
-        this.$.wrap.querySelector('.items').style.transform = 'translateX(' + (this.offset) + 'px)';
-        this.$.wrap.querySelector('.items').style.MozTransform = 'translateX(' + (this.offset) + 'px)';
-
+        this.bookingTimeslots = [];
       }
-
     });
 
   </script>

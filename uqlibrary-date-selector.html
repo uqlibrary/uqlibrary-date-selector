@@ -12,6 +12,29 @@ Custom web element displays a provided date and time schedule with ability to se
 
     <uqlibrary-date-selector></uqlibrary-date-selector>
 
+     <script>
+      (function () {
+
+        window.addEventListener('polymer-ready', function() {
+            var date_selector = document.querySelector('uqlibrary-date-selector');
+
+            date_selector.searchDate = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
+            date_selector.maxBookingDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+            date_selector.bookingTimeslots = [
+                {
+                    startTime : '8:00 am',
+                    selectable: true,
+                    selected: false
+                },
+                {
+                    startTime : '8:30 am',
+                    selectable: true,
+                    selected: false
+                }
+            ];
+            }());
+    </script>
+
 @element uqlibrary-date-selector
 @blurb Custom web element displays a provided date and time schedule with ability to select time slots
 @status alpha
@@ -57,19 +80,27 @@ Custom web element displays a provided date and time schedule with ability to se
 
     Polymer({
     /**
-     * Current date for schedule display
+     * The `searchDate` attribute date for which display time slots
      *
      * @property searchDate
      * @type Date
-     *
-     * Max date for schedule display
+     */
+
+    /**
+     * The `maxBookingDate` attribute date maximum possible booking date
      *
      * @property maxDate
      * @type Date
      */
 
+     /**
+      *  The `bookingTimeslots` attribute object containing time slots for searchDate
+      *
+      * @property bookingTimeslots
+      * @type Object
+      */
+
       setCurrentClass : function (date) {
-        console.log(date.toDateString() + " === " + this.searchDate.toDateString());
         return date.toDateString() === this.searchDate.toDateString() ? 'selected' : '';
       },
 
@@ -81,16 +112,17 @@ Custom web element displays a provided date and time schedule with ability to se
         return '' + this.dayNames[date.getDay()];
       },
 
-      datesChanged: function(oldValue, newValue) {
-        console.log ("timeslotsChanged: " + newValue.length);
-      },
-
       searchDateChanged : function (oldValue, newValue) {
         this.generateDates();
+
+        //TODO: get timeslots for this date from...?
+
       },
 
       bookingTimeslotsChanged : function(oldValue, newValue){
+
         this.$.timeSelector.timeslots = this.bookingTimeslots;
+
       },
 
       created: function() {
@@ -130,6 +162,82 @@ Custom web element displays a provided date and time schedule with ability to se
       showNextDate: function(event) {
         console.log('showNextDate TBA');
       }
+
+      /*
+
+       getGesturePointFromEvent : function(evt) {
+       var point = {};
+
+       if(evt.targetTouches) {
+       point.x = evt.targetTouches[0].clientX;
+       point.y = evt.targetTouches[0].clientY;
+       } else {
+       // Either Mouse event or Pointer Event
+       point.x = evt.clientX;
+       point.y = evt.clientY;
+       }
+
+       return point;
+       },
+
+       slideTouch: function(evt) {
+
+       var itemCount = this.timeslots.length;
+       var scrolleWidth = this.$.wrap.querySelector('.scroller').clientWidth;
+
+       if (!this.lastTimeScrollPosition)
+       this.lastTimeScrollPosition = this.getGesturePointFromEvent(evt).x;
+
+       //TODO: calculate scrolling position
+       var delta = (this.getGesturePointFromEvent(evt).x - this.lastTimeScrollPosition);
+
+       this.offset += delta;
+       console.log('offset: ' + this.offset + ' delta:' + delta + " direction: touch");
+       console.log('new x: ' + this.getGesturePointFromEvent(evt).x + ' old x:' + this.lastTimeScrollPosition);
+       this.setTransform();
+
+       //update last time scroll position
+       this.lastTimeScrollPosition = this.getGesturePointFromEvent(evt).x;
+
+       },
+
+       slidePrevious: function(evt) {
+       //TODO: calculate scrolling position
+       var delta = 170;
+       this.offset += delta;
+
+       console.log('offset: ' + this.offset + ' delta:' + delta + " direction: previous");
+
+       this.setTransform();
+       },
+
+       slideNext: function(evt) {
+       //TODO: calculate scrolling position
+       var delta = -170;
+       this.offset += delta;
+
+       console.log('offset: ' + this.offset + ' delta:' + delta + " direction: next");
+
+       this.setTransform();
+       },
+
+       setTransform: function() {
+       //TODO: check boundaries of .items vs .scroller not to scroll over
+
+       //this.offset = this.offset > 0 ? 0 : this.offset;
+       //this.offset = this.offset < -(this.$.wrap.querySelector('.items').clientWidth) ?  -this.$.wrap.querySelector('.items').clientWidth : this.offset;
+
+       console.log('offset: ' + this.offset);
+
+       //this.$.wrap.querySelector('.items').style[this.transform] = 'translate3d(' + (this.offset) + 'p x,0,0)';
+       this.$.wrap.querySelector('.items').style.msTransform = 'translateX(' + (this.offset) + 'px)';
+       this.$.wrap.querySelector('.items').style.webkitTransform = 'translateX(' + (this.offset) + 'px)';
+       this.$.wrap.querySelector('.items').style.transform = 'translateX(' + (this.offset) + 'px)';
+       this.$.wrap.querySelector('.items').style.MozTransform = 'translateX(' + (this.offset) + 'px)';
+
+       }
+
+      * */
     });
 
   </script>

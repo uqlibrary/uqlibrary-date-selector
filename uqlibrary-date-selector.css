@@ -1,56 +1,60 @@
-/*
- * @license
- * Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
- * This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
- * The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
- * The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
- * Code distributed by Google as part of the polymer project is also
- * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
- */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 200;
+  src: url("Roboto-Light.woff") format("woff"); }
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url("Roboto-Regular.woff") format("woff"); }
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url("Roboto-Medium.woff") format("woff"); }
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url("Roboto-Bold.woff") format("woff"); }
+:host,
+:host *,
+::content * {
+  box-sizing: border-box;
+  outline: none; }
 
 :host {
-    display: block;
-}
+  display: block; }
 
 /* To ensure your styling works under the Shadow DOM polyfill, see
    www.polymer-project.org/docs/polymer/styling.html#directives */
 polyfill-next-selector {
-    content: ':host > h2';
-}
+  content: ':host > h2'; }
 
-::content h2 {
-  color: #6b499f;
-}
-
-
-.wrap{
+.wrap {
   display: flex;
   align-items: stretch;
-  max-width: 800px;
+  max-width: 800px; }
 
-}
-
-.scroller{
+.scroller {
   flex: 1;
-  overflow: hidden;
-}
+  overflow: hidden; }
 
-.items{
+.items {
   margin: 0;
   padding: 0;
-
   list-style-type: none;
   white-space: nowrap;
   font-size: 0;
   line-height: 0;
   transition: transform 1s ease-in-out;
-  max-width: 750px;
-}
+  max-width: 750px; }
 
-.item{
+.item {
   text-align: center;
   display: inline-block;
-  min-width: 98px; /* todo: make responsive, depending on screen width */
+  min-width: 98px;
   font-size: 16px;
   padding: 20px 0;
   font-weight: bold;
@@ -58,11 +62,10 @@ polyfill-next-selector {
   text-transform: uppercase;
   border: 1px solid #ddd;
   margin: 0 3px 3px 0;
-  background-color: #fafafa;
-}
+  background-color: #fafafa; }
 
 .item.selected {
   color: white;
-  background-color: teal;
-}
+  background-color: teal; }
 
+/*# sourceMappingURL=uqlibrary-date-selector.css.map */

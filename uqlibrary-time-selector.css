@@ -1,82 +1,65 @@
-/*
- * @license
- * Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
- * This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
- * The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
- * The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
- * Code distributed by Google as part of the polymer project is also
- * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
- */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 200;
+  src: url("Roboto-Light.woff") format("woff"); }
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url("Roboto-Regular.woff") format("woff"); }
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url("Roboto-Medium.woff") format("woff"); }
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url("Roboto-Bold.woff") format("woff"); }
+:host,
+:host *,
+::content * {
+  box-sizing: border-box;
+  outline: none; }
 
 :host {
-    display: block;
-}
+  display: block; }
 
 /* To ensure your styling works under the Shadow DOM polyfill, see
    www.polymer-project.org/docs/polymer/styling.html#directives */
 polyfill-next-selector {
-    content: ':host > h2';
-}
+  content: ':host > h2'; }
 
-*{
+* {
   box-sizing: border-box;
   margin: 0;
-  padding: 0;
-}
+  padding: 0; }
 
-
-/*
-
-::content h2 {
-  color: #6b499f;
-}
-
-.wrap{
-  display: flex;
-  align-items: stretch;
-  width: 90%;
-  margin: auto;
-}
-
-.scroller{
-  flex: 1;
-  overflow: hidden;
-  border: 1px solid black;
-  padding: 5px;
-  width: 90%;
-}
-*/
-
-.items{
+.items {
   max-width: 750px;
   margin: 0 40px;
   list-style-type: none;
   font-size: 0;
-  line-height: 0;
-}
+  line-height: 0; }
 
-
-.item{
+.item {
   text-align: center;
   display: inline-block;
-  min-width: 90px; /* todo: make responsive, depending on screen width */
+  min-width: 90px;
   padding: 15px 10px;
   font-size: 13px;
   line-height: 1;
   text-transform: uppercase;
-  border: 1px solid #efefef;
-
-  Mmargin: 1px 1px 0 0;
-
-}
+  border: 1px solid #efefef; }
 
 .item.occupied {
-    background-color: red;
-    color: #fdfdfd;
-}
+  background-color: red;
+  color: #fdfdfd; }
 
 .item.selected {
-    background-color: teal;
-    color: #fdfdfd;
-}
+  background-color: teal;
+  color: #fdfdfd; }
 
+/*# sourceMappingURL=uqlibrary-time-selector.css.map */
