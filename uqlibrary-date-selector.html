@@ -1,7 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../core-icons/core-icons.html">
-
+<link rel="import" href="../paper-tabs/paper-tabs.html">
 <link rel="import" href="uqlibrary-time-selector.html">
 
 <!--
@@ -47,29 +45,16 @@ Custom web element displays a provided date and time schedule with ability to se
 
     <link rel="stylesheet" href="uqlibrary-date-selector.css">
 
-    <div id="wrap" class="wrap">
+    <paper-tabs id="items" selected="{{ selectedDateIndex }}" on-core-select = "{{ dateSelected }}" scrollable>
+      <template repeat="{{date, index in dates}}">
 
-      <paper-icon-button id="button-left" icon="chevron-left" on-click="{{ showPreviousDate }}"> </paper-icon-button>
-      <div class="scroller">
+        <paper-tab class="item" data-index="{{ index }}" data-value=" {{ date }}">
+          {{  date  | dayOfWeek  }},<br/>
+          {{  date  | formatDate  }}
+        </paper-tab>
 
-        <ul class="items">
-
-          <template repeat="{{date, index in dates}}">
-
-              <li class="item {{ date | setCurrentClass }}" data-index="{{index}}">
-                {{  date  | dayOfWeek  }},<br/>
-                {{  date  | formatDate  }}
-
-              </li>
-
-          </template>
-
-        </ul>
-
-      </div>
-      <paper-icon-button id="button-right" icon="chevron-right" on-click="{{ showNextDate }}"> </paper-icon-button>
-
-    </div>
+      </template>
+    </paper-tabs>
 
     <uqlibrary-time-selector id="timeSelector"></uqlibrary-time-selector>
 
@@ -100,10 +85,6 @@ Custom web element displays a provided date and time schedule with ability to se
       * @type Object
       */
 
-      setCurrentClass : function (date) {
-        return date.toDateString() === this.searchDate.toDateString() ? 'selected' : '';
-      },
-
       formatDate : function (date) {
         return '' + date.getDate() + " " + this.monthNames[date.getMonth()];
       },
@@ -112,16 +93,32 @@ Custom web element displays a provided date and time schedule with ability to se
         return '' + this.dayNames[date.getDay()];
       },
 
-      searchDateChanged : function (oldValue, newValue) {
+      maxBookingDateChanged : function (oldValue, newValue) {
         this.generateDates();
+        this.selectedDateIndex = this.dates.map(function(date) {return date.toDateString(); }).indexOf(this.searchDate.toDateString());
+      },
+
+      searchDateChanged : function (oldValue, newValue) {
+
+        this.selectedDateIndex = this.dates.map(function(date) {return date.toDateString(); }).indexOf(this.searchDate.toDateString());
 
         //TODO: get timeslots for this date from...?
+        console.log("searchDateChanged.... loading timeslots..." + newValue.toDateString());
 
       },
 
       bookingTimeslotsChanged : function(oldValue, newValue){
 
         this.$.timeSelector.bookingTimeslots = this.bookingTimeslots;
+
+      },
+
+      dateSelected : function(event) {
+
+        if (event.detail.isSelected
+                && this.searchDate.toDateString() !== this.dates[this.$.items.selected].toDateString()) {
+          this.searchDate = this.dates[this.$.items.selected];
+        }
 
       },
 
@@ -153,91 +150,8 @@ Custom web element displays a provided date and time schedule with ability to se
         for(var i=0; i < diffDays; i++) {
           this.dates.push(new Date(today.getTime() + i * this.ticksPerDay));
         }
-      },
-
-      showPreviousDate: function(event) {
-        console.log('showPreviousDate TBA');
-      },
-
-      showNextDate: function(event) {
-        console.log('showNextDate TBA');
       }
 
-      /*
-
-       getGesturePointFromEvent : function(evt) {
-       var point = {};
-
-       if(evt.targetTouches) {
-       point.x = evt.targetTouches[0].clientX;
-       point.y = evt.targetTouches[0].clientY;
-       } else {
-       // Either Mouse event or Pointer Event
-       point.x = evt.clientX;
-       point.y = evt.clientY;
-       }
-
-       return point;
-       },
-
-       slideTouch: function(evt) {
-
-       var itemCount = this.timeslots.length;
-       var scrolleWidth = this.$.wrap.querySelector('.scroller').clientWidth;
-
-       if (!this.lastTimeScrollPosition)
-       this.lastTimeScrollPosition = this.getGesturePointFromEvent(evt).x;
-
-       //TODO: calculate scrolling position
-       var delta = (this.getGesturePointFromEvent(evt).x - this.lastTimeScrollPosition);
-
-       this.offset += delta;
-       console.log('offset: ' + this.offset + ' delta:' + delta + " direction: touch");
-       console.log('new x: ' + this.getGesturePointFromEvent(evt).x + ' old x:' + this.lastTimeScrollPosition);
-       this.setTransform();
-
-       //update last time scroll position
-       this.lastTimeScrollPosition = this.getGesturePointFromEvent(evt).x;
-
-       },
-
-       slidePrevious: function(evt) {
-       //TODO: calculate scrolling position
-       var delta = 170;
-       this.offset += delta;
-
-       console.log('offset: ' + this.offset + ' delta:' + delta + " direction: previous");
-
-       this.setTransform();
-       },
-
-       slideNext: function(evt) {
-       //TODO: calculate scrolling position
-       var delta = -170;
-       this.offset += delta;
-
-       console.log('offset: ' + this.offset + ' delta:' + delta + " direction: next");
-
-       this.setTransform();
-       },
-
-       setTransform: function() {
-       //TODO: check boundaries of .items vs .scroller not to scroll over
-
-       //this.offset = this.offset > 0 ? 0 : this.offset;
-       //this.offset = this.offset < -(this.$.wrap.querySelector('.items').clientWidth) ?  -this.$.wrap.querySelector('.items').clientWidth : this.offset;
-
-       console.log('offset: ' + this.offset);
-
-       //this.$.wrap.querySelector('.items').style[this.transform] = 'translate3d(' + (this.offset) + 'p x,0,0)';
-       this.$.wrap.querySelector('.items').style.msTransform = 'translateX(' + (this.offset) + 'px)';
-       this.$.wrap.querySelector('.items').style.webkitTransform = 'translateX(' + (this.offset) + 'px)';
-       this.$.wrap.querySelector('.items').style.transform = 'translateX(' + (this.offset) + 'px)';
-       this.$.wrap.querySelector('.items').style.MozTransform = 'translateX(' + (this.offset) + 'px)';
-
-       }
-
-      * */
     });
 
   </script>

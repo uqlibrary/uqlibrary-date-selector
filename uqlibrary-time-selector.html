@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-ripple/paper-ripple.html">
 <!--
 Element provides slide-show display for paper checkboxes, touch enabled
 
@@ -43,7 +44,9 @@ Element provides slide-show display for paper checkboxes, touch enabled
       <template repeat="{{timeslot, index in bookingTimeslots}}">
 
           <li class="item {{ timeslot | setStatusClass}}" data-index="{{index}}">
-              <div class="timeslot-title">{{timeslot.startTime}}</div>
+            <div class="timeslot-title">{{timeslot.startTime}}</div>
+            <paper-ripple fit></paper-ripple>
+
           </li>
 
       </template>

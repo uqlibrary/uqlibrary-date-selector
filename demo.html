@@ -137,6 +137,8 @@
 
           setTimeout(function () {
             date_selector.searchDate = new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000);
+            date_selector.maxBookingDate = new Date(new Date().getTime() + 10 * 24 * 60 * 60 * 1000);
+
             date_selector.bookingTimeslots = [
               {
                 startTime : '8:00 am',

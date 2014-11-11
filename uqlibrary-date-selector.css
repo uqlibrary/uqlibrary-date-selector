@@ -24,48 +24,17 @@
   box-sizing: border-box;
   outline: none; }
 
-:host {
-  display: block; }
+paper-tabs {
+  background-color: #fafafa;
+  max-width: 830px;
+  margin-bottom: 10px; }
 
-/* To ensure your styling works under the Shadow DOM polyfill, see
-   www.polymer-project.org/docs/polymer/styling.html#directives */
-polyfill-next-selector {
-  content: ':host > h2'; }
-
-.wrap {
-  display: flex;
-  align-items: stretch;
-  max-width: 800px; }
-
-.scroller {
-  flex: 1;
-  overflow: hidden; }
-
-.items {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  white-space: nowrap;
-  font-size: 0;
-  line-height: 0;
-  transition: transform 1s ease-in-out;
-  max-width: 750px; }
-
-.item {
+paper-tab {
   text-align: center;
-  display: inline-block;
-  min-width: 98px;
-  font-size: 16px;
-  padding: 20px 0;
-  font-weight: bold;
-  line-height: 1;
-  text-transform: uppercase;
-  border: 1px solid #ddd;
-  margin: 0 3px 3px 0;
-  background-color: #fafafa; }
+  min-width: 100px; }
 
-.item.selected {
-  color: white;
-  background-color: teal; }
+paper-tab.core-selected {
+  background-color: teal;
+  color: white; }
 
 /*# sourceMappingURL=uqlibrary-date-selector.css.map */
