@@ -1,0 +1,68 @@
+/*
+ * @license
+ * Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+ * This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+ * The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+ * The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+ * Code distributed by Google as part of the polymer project is also
+ * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+ */
+
+:host {
+    display: block;
+}
+
+/* To ensure your styling works under the Shadow DOM polyfill, see
+   www.polymer-project.org/docs/polymer/styling.html#directives */
+polyfill-next-selector {
+    content: ':host > h2';
+}
+
+::content h2 {
+  color: #6b499f;
+}
+
+
+.wrap{
+  display: flex;
+  align-items: stretch;
+  max-width: 800px;
+
+}
+
+.scroller{
+  flex: 1;
+  overflow: hidden;
+}
+
+.items{
+  margin: 0;
+  padding: 0;
+
+  list-style-type: none;
+  white-space: nowrap;
+  font-size: 0;
+  line-height: 0;
+  transition: transform 1s ease-in-out;
+  max-width: 750px;
+}
+
+.item{
+  text-align: center;
+  display: inline-block;
+  min-width: 98px; /* todo: make responsive, depending on screen width */
+  font-size: 16px;
+  padding: 20px 0;
+  font-weight: bold;
+  line-height: 1;
+  text-transform: uppercase;
+  border: 1px solid #ddd;
+  margin: 0 3px 3px 0;
+  background-color: #fafafa;
+}
+
+.item.selected {
+  color: white;
+  background-color: teal;
+}
+

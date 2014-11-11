@@ -1,0 +1,137 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../core-icons/core-icons.html">
+
+<link rel="import" href="uqlibrary-time-selector.html">
+
+<!--
+
+Custom web element displays a provided date and time schedule with ability to select time slots
+
+##### Example
+
+    <uqlibrary-date-selector></uqlibrary-date-selector>
+
+@element uqlibrary-date-selector
+@blurb Custom web element displays a provided date and time schedule with ability to select time slots
+@status alpha
+@homepage http://uqlibrary.github.io/uqlibrary-date-selector
+
+-->
+<polymer-element name="uqlibrary-date-selector" attributes="searchDate maxBookingDate bookingTimeslots">
+
+  <template>
+
+    <link rel="stylesheet" href="uqlibrary-date-selector.css">
+
+    <div id="wrap" class="wrap">
+
+      <paper-icon-button id="button-left" icon="chevron-left" on-click="{{ showPreviousDate }}"> </paper-icon-button>
+      <div class="scroller">
+
+        <ul class="items">
+
+          <template repeat="{{date, index in dates}}">
+
+              <li class="item {{ date | setCurrentClass }}" data-index="{{index}}">
+                {{  date  | dayOfWeek  }},<br/>
+                {{  date  | formatDate  }}
+
+              </li>
+
+          </template>
+
+        </ul>
+
+      </div>
+      <paper-icon-button id="button-right" icon="chevron-right" on-click="{{ showNextDate }}"> </paper-icon-button>
+
+    </div>
+
+    <uqlibrary-time-selector id="timeSelector"></uqlibrary-time-selector>
+
+  </template>
+
+
+  <script>
+
+    Polymer({
+    /**
+     * Current date for schedule display
+     *
+     * @property searchDate
+     * @type Date
+     *
+     * Max date for schedule display
+     *
+     * @property maxDate
+     * @type Date
+     */
+
+      setCurrentClass : function (date) {
+        console.log(date.toDateString() + " === " + this.searchDate.toDateString());
+        return date.toDateString() === this.searchDate.toDateString() ? 'selected' : '';
+      },
+
+      formatDate : function (date) {
+        return '' + date.getDate() + " " + this.monthNames[date.getMonth()];
+      },
+
+      dayOfWeek : function (date) {
+        return '' + this.dayNames[date.getDay()];
+      },
+
+      datesChanged: function(oldValue, newValue) {
+        console.log ("timeslotsChanged: " + newValue.length);
+      },
+
+      searchDateChanged : function (oldValue, newValue) {
+        this.generateDates();
+      },
+
+      bookingTimeslotsChanged : function(oldValue, newValue){
+        this.$.timeSelector.timeslots = this.bookingTimeslots;
+      },
+
+      created: function() {
+        this.ticksPerDay = 24 * 60 * 60 * 1000;
+        this.dayNames = [
+          'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
+        ];
+        this.monthNames = [
+          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+
+        this.searchDate = new Date();
+        this.maxBookingDate = new Date(this.searchDate.getTime() + 7 * this.ticksPerDay);
+        this.dates = [];
+        this.bookingTimeslots = [];
+
+        this.generateDates();
+      },
+
+      generateDates: function() {
+        var today = new Date();
+
+        var timeDiff = Math.abs(today.getTime() - this.maxBookingDate.getTime());
+        var diffDays = Math.ceil(timeDiff / this.ticksPerDay);
+
+        this.dates = [];
+
+        for(var i=0; i < diffDays; i++) {
+          this.dates.push(new Date(today.getTime() + i * this.ticksPerDay));
+        }
+      },
+
+      showPreviousDate: function(event) {
+        console.log('showPreviousDate TBA');
+      },
+
+      showNextDate: function(event) {
+        console.log('showNextDate TBA');
+      }
+    });
+
+  </script>
+
+</polymer-element>
