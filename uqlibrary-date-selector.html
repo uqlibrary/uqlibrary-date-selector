@@ -18,6 +18,7 @@ Custom web element displays a provided date and time schedule with ability to se
 
             date_selector.searchDate = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
             date_selector.maxBookingDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+            date_selector.maxBookingLength = 4;
             date_selector.bookingTimeslots = [
                 {
                     startTime : '8:00 am',
@@ -39,7 +40,7 @@ Custom web element displays a provided date and time schedule with ability to se
 @homepage http://uqlibrary.github.io/uqlibrary-date-selector
 
 -->
-<polymer-element name="uqlibrary-date-selector" attributes="searchDate maxBookingDate bookingTimeslots">
+<polymer-element name="uqlibrary-date-selector" attributes="searchDate maxBookingDate bookingTimeslots maxBookingLength">
 
   <template>
 
@@ -56,7 +57,7 @@ Custom web element displays a provided date and time schedule with ability to se
       </template>
     </paper-tabs>
 
-    <uqlibrary-time-selector id="timeSelector"></uqlibrary-time-selector>
+    <uqlibrary-time-selector id="timeSelector" maxBookingLength="{{ maxBookingLength}} "></uqlibrary-time-selector>
 
   </template>
 
@@ -65,25 +66,32 @@ Custom web element displays a provided date and time schedule with ability to se
 
     Polymer({
     /**
-     * The `searchDate` attribute date for which display time slots
+     * The `searchDate` attribute date for which to display time slots
      *
      * @property searchDate
      * @type Date
      */
 
     /**
-     * The `maxBookingDate` attribute date maximum possible booking date
+     * The `maxBookingDate` attribute date indicates maximum possible booking date
      *
-     * @property maxDate
+     * @property maxBookingDate
      * @type Date
      */
 
      /**
-      *  The `bookingTimeslots` attribute object containing time slots for searchDate
+      *  The `bookingTimeslots` attribute object contains time slots for selected search date
       *
       * @property bookingTimeslots
       * @type Object
       */
+
+      /**
+       *  The `maxBookingLength` attribute is an int indicates maximum number of time slots per booking
+       *
+       * @property maxBookingLength
+       * @type Int
+       */
 
       formatDate : function (date) {
         return '' + date.getDate() + " " + this.monthNames[date.getMonth()];
@@ -99,24 +107,17 @@ Custom web element displays a provided date and time schedule with ability to se
       },
 
       searchDateChanged : function (oldValue, newValue) {
-
         this.selectedDateIndex = this.dates.map(function(date) {return date.toDateString(); }).indexOf(this.searchDate.toDateString());
-
-        //TODO: get timeslots for this date from...?
-        console.log("searchDateChanged.... loading timeslots..." + newValue.toDateString());
-
       },
 
       bookingTimeslotsChanged : function(oldValue, newValue){
-
         this.$.timeSelector.bookingTimeslots = this.bookingTimeslots;
-
       },
 
       dateSelected : function(event) {
 
         if (event.detail.isSelected
-                && this.searchDate.toDateString() !== this.dates[this.$.items.selected].toDateString()) {
+            && this.searchDate.toDateString() !== this.dates[this.$.items.selected].toDateString()) {
           this.searchDate = this.dates[this.$.items.selected];
         }
 
@@ -135,6 +136,7 @@ Custom web element displays a provided date and time schedule with ability to se
         this.maxBookingDate = new Date(this.searchDate.getTime() + 7 * this.ticksPerDay);
         this.dates = [];
         this.bookingTimeslots = [];
+        this.maxBookingLength = 0;
 
         this.generateDates();
       },

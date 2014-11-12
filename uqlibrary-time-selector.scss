@@ -38,12 +38,12 @@ polyfill-next-selector {
   border: 1px solid #efefef;
 }
 
-.item.occupied {
+.item.occupied-true {
     background-color: red;
     color: #fdfdfd;
 }
 
-.item.selected {
+.item.selected-true {
     background-color: teal;
     color: #fdfdfd;
 }

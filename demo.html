@@ -27,113 +27,115 @@
 
     (function(){
         window.addEventListener('polymer-ready', function(){
-            var date_selector = document.querySelector('uqlibrary-date-selector');
+          var date_selector = document.querySelector('uqlibrary-date-selector');
 
-            date_selector.searchDate = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
-            date_selector.maxBookingDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
-            date_selector.bookingTimeslots = [
-                {
-                    startTime : '8:00 am',
-                    selectable: true,
-                    selected: false
-                },
-                {
-                    startTime : '8:30 am',
-                    selectable: true,
-                    selected: false
-                },
-                {
-                    startTime : '9:00 am',
-                    selectable: true,
-                    selected: false
-                },
-                {
-                    startTime : '9:30 am',
-                    selectable: true,
-                    selected: false
-                },
-                {
-                    startTime : '10:00 am',
-                    selectable: true,
-                    selected: false
-                },
-                {
-                    startTime : '10:30 am',
-                    selectable: true,
-                    selected: false
-                },
-                {
-                    startTime : '11:00 am',
-                    selectable: true,
-                    selected: false
-                },
-                {
-                    startTime : '11:30 am',
-                    selectable: true,
-                    selected: false
-                },
-                {
-                    startTime : '12:00 pm',
-                    selectable: true,
-                    selected: false
-                },
-                {
-                    startTime : '12:30 pm',
-                    selectable: true,
-                    selected: false
-                },
-                {
-                    startTime : '1:00 pm',
-                    selectable: true,
-                    selected: false
-                },
-                {
-                    startTime : '1:30 pm',
-                    selectable: true,
-                    selected: false
-                },
-                {
-                    startTime : '2:00 pm',
-                    selectable: false,
-                    selected: false
-                },
-                {
-                    startTime : '2:30 pm',
-                    selectable: false,
-                    selected: false
-                },
-                {
-                    startTime : '3:00 pm',
-                    selectable: false,
-                    selected: false
-                },
+          date_selector.searchDate = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
+          date_selector.maxBookingDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+          date_selector.maxBookingLength = 5;
 
-                {
-                    startTime : '3:30 pm',
-                    selectable: true,
-                    selected: false
-                },
-                {
-                    startTime : '4:00 pm',
-                    selectable: true,
-                    selected: true
-                },
-                {
-                    startTime : '4:30 pm',
-                    selectable: true,
-                    selected: true
-                },
-                {
-                    startTime : '5:00 pm',
-                    selectable: true,
-                    selected: true
-                },
-                {
-                    startTime : '5:30 pm',
-                    selectable: true,
-                    selected: true
-                }
-            ];
+          date_selector.bookingTimeslots = [
+              {
+                  startTime : '8:00 am',
+                  selectable: true,
+                  selected: false
+              },
+              {
+                  startTime : '8:30 am',
+                  selectable: true,
+                  selected: false
+              },
+              {
+                  startTime : '9:00 am',
+                  selectable: true,
+                  selected: false
+              },
+              {
+                  startTime : '9:30 am',
+                  selectable: true,
+                  selected: false
+              },
+              {
+                  startTime : '10:00 am',
+                  selectable: true,
+                  selected: false
+              },
+              {
+                  startTime : '10:30 am',
+                  selectable: true,
+                  selected: false
+              },
+              {
+                  startTime : '11:00 am',
+                  selectable: true,
+                  selected: false
+              },
+              {
+                  startTime : '11:30 am',
+                  selectable: true,
+                  selected: false
+              },
+              {
+                  startTime : '12:00 pm',
+                  selectable: true,
+                  selected: false
+              },
+              {
+                  startTime : '12:30 pm',
+                  selectable: true,
+                  selected: false
+              },
+              {
+                  startTime : '1:00 pm',
+                  selectable: true,
+                  selected: false
+              },
+              {
+                  startTime : '1:30 pm',
+                  selectable: true,
+                  selected: false
+              },
+              {
+                  startTime : '2:00 pm',
+                  selectable: false,
+                  selected: false
+              },
+              {
+                  startTime : '2:30 pm',
+                  selectable: false,
+                  selected: false
+              },
+              {
+                  startTime : '3:00 pm',
+                  selectable: false,
+                  selected: false
+              },
+
+              {
+                  startTime : '3:30 pm',
+                  selectable: true,
+                  selected: false
+              },
+              {
+                  startTime : '4:00 pm',
+                  selectable: true,
+                  selected: true
+              },
+              {
+                  startTime : '4:30 pm',
+                  selectable: true,
+                  selected: true
+              },
+              {
+                  startTime : '5:00 pm',
+                  selectable: true,
+                  selected: true
+              },
+              {
+                  startTime : '5:30 pm',
+                  selectable: true,
+                  selected: true
+              }
+          ];
 
           setTimeout(function () {
             date_selector.searchDate = new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000);
