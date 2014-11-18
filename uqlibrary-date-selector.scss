@@ -4,7 +4,7 @@
 }
 
 paper-tabs {
-  background-color: #fafafa;
+  background-color: $dropdown-background;
   max-width: 830px;
   margin-bottom: 10px;
 }
@@ -15,7 +15,7 @@ paper-tab {
 }
 
 paper-tab.core-selected {
-  background-color: teal;
+  background-color: $teal-500;
   color: white;
 }
 

@@ -39,22 +39,13 @@ polyfill-next-selector {
 }
 
 .item.occupied-true {
-    background-color: red;
-    color: #fdfdfd;
+    background-color: $error-color;
+    color: $white;
 }
 
 .item.selected-true {
-    background-color: teal;
-    color: #fdfdfd;
+    background-color: $teal-500;
+    color: $white;
 }
 
-.card
-{
-  position: relative;
-  display: inline-block;
-  width: 300px;
-  height: 240px;
-  vertical-align: top;
-  background-color: #fff;
-}
 
