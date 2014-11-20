@@ -26,15 +26,13 @@
 
 paper-tabs {
   background-color: #EEEEEE;
-  max-width: 830px;
   margin-bottom: 10px; }
 
 paper-tab {
   text-align: center;
   min-width: 100px; }
-
-paper-tab.core-selected {
-  background-color: #009688;
-  color: white; }
+  paper-tab.core-selected {
+    background-color: #009688;
+    color: #ffffff; }
 
 /*# sourceMappingURL=uqlibrary-date-selector.css.map */

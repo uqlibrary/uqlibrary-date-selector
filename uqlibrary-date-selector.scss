@@ -4,18 +4,17 @@
 }
 
 paper-tabs {
-  background-color: $dropdown-background;
-  max-width: 830px;
+  background-color: $fbs-unselected-date;
   margin-bottom: 10px;
 }
 
 paper-tab {
   text-align: center;
   min-width: 100px;
-}
 
-paper-tab.core-selected {
-  background-color: $teal-500;
-  color: white;
+  &.core-selected {
+    background-color: $fbs-selected-date;
+    color: $white;
+  }
 }
 

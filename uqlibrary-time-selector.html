@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-button/paper-button.html">
+<script src="../moment/moment.js"></script>
 <!--
 Element provides slide-show display for paper checkboxes, touch enabled
 
@@ -10,17 +11,19 @@ Element provides slide-show display for paper checkboxes, touch enabled
       (function () {
 
         window.addEventListener('polymer-ready', function() {
-            var time_selector = document.querySelector('uqlibrary-tim-selector');
+            var time_selector = document.querySelector('uqlibrary-time-selector');
 
             time_selector.maxBookingLength = 4;
             time_selector.timeslots = [
                 {
-                    startTime : '8:00 am',
+                    startTime : new Date(Fri Nov 21 2014 00:00:00 GMT+1000 (AEST)),
+                    endTime : new Date(Fri Nov 21 2014 00:30:00 GMT+1000 (AEST)),
                     selectable: true,
                     selected: false
                 },
                 {
-                    startTime : '8:30 am',
+                    startTime : new Date(Fri Nov 21 2014 00:30:00 GMT+1000 (AEST)),
+                    endTime : new Date(Fri Nov 21 2014 01:00:00 GMT+1000 (AEST)),
                     selectable: true,
                     selected: false
                 }
@@ -39,12 +42,18 @@ Element provides slide-show display for paper checkboxes, touch enabled
   <template>
 
     <link rel="stylesheet" href="uqlibrary-time-selector.css">
-
     <div class="items">
       <template repeat="{{timeslot, index in bookingTimeslots}}">
 
-        <paper-button class="item selected-{{ timeslot.selected }} occupied-{{ !timeslot.selectable }}" disabled?="{{!timeslot.selectable}}" aria-disabled?="{{!timeslot.selectable}}" data-index="{{index}}" on-click="{{timeslotChanged}}">
-          {{timeslot.startTime}}
+        <paper-button
+                class="item selected-{{ timeslot.selected }} occupied-{{ !timeslot.selectable }}"
+                disabled?="{{!timeslot.selectable}}"
+                aria-disabled?="{{!timeslot.selectable}}"
+                data-index="{{index}}"
+                on-click="{{timeslotChanged}}">
+
+          {{ timeslot.startTime | formatTime }}
+
         </paper-button>
 
       </template>
@@ -69,9 +78,9 @@ Element provides slide-show display for paper checkboxes, touch enabled
      * @type Int
      */
 
-     setStatusClass: function(status) {
-        return status.selectable ? (status.selected ? 'selected': '') : 'occupied';
-     },
+      formatTime : function (timeslotValue) {
+        return moment(timeslotValue).format("hh:mm a");
+      },
      
       created: function() {
         this.bookingTimeslots = [];
@@ -81,13 +90,13 @@ Element provides slide-show display for paper checkboxes, touch enabled
       timeslotChanged : function (event, data, source) {
         var selectedIndex = source.attributes["data-index"].value;
 
-        if (this.timeslotChangeValid(selectedIndex)) {
+        if (this.isTimeslotChangeValid(selectedIndex)) {
           this.bookingTimeslots[selectedIndex].selected = !this.bookingTimeslots[selectedIndex].selected;
           this.fire('time-selector-changed', { bookingTimeslots: this.bookingTimeslots, changedIndex: selectedIndex });
         }
       },
 
-      timeslotChangeValid : function (index) {
+      isTimeslotChangeValid : function (index) {
         index = parseInt(index);
         var currentTimeslot = this.bookingTimeslots[index];
         var prevTimeslot = index > 0 ? this.bookingTimeslots[index - 1] : null;
@@ -106,7 +115,6 @@ Element provides slide-show display for paper checkboxes, touch enabled
           return !(prevTimeslot && prevTimeslot.selected && nextTimeslot && nextTimeslot.selected);
         } else if ((prevTimeslot && prevTimeslot.selected) || (nextTimeslot && nextTimeslot.selected)) {
           // valid if selected time slot is next to previously selected time slots
-
           // valid if total number of timeslots selections does not exceed max booking length
           return this.maxBookingLength == 0 || (selectedTimeslots.length + 1) <= this.maxBookingLength;
         }
