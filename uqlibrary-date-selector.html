@@ -60,7 +60,23 @@ Custom web element displays a provided date and time schedule with ability to se
       </template>
     </paper-tabs>
 
-    <uqlibrary-time-selector id="timeSelector" maxBookingLength="{{ maxBookingLength}} "></uqlibrary-time-selector>
+    <core-animation id="fadein" duration="600">
+
+      <core-animation-keyframe>
+        <core-animation-prop name="opacity" value="0">
+        </core-animation-prop>
+      </core-animation-keyframe>
+
+      <core-animation-keyframe>
+        <core-animation-prop name="opacity" value="1">
+        </core-animation-prop>
+      </core-animation-keyframe>
+
+    </core-animation>
+
+    <div id="timeSelectorContainer">
+      <uqlibrary-time-selector id="timeSelector" maxBookingLength="{{ maxBookingLength}} "></uqlibrary-time-selector>
+    </div>
 
   </template>
 
@@ -96,6 +112,7 @@ Custom web element displays a provided date and time schedule with ability to se
        * @type Int
        */
 
+
       formatDate : function (date) {
         return moment(date).format('D MMM');
       },
@@ -117,9 +134,19 @@ Custom web element displays a provided date and time schedule with ability to se
         this.selectedDateIndex = this.dates.map(function(date) {
           return date.toDateString();
         }).indexOf(this.searchDate.toDateString());
+
+        this.$.items.updateBar();
       },
 
+
       bookingTimeslotsChanged : function(oldValue, newValue){
+
+        this.$.timeSelectorContainer.style.opacity = 0;
+
+        var animation = this.$.fadein;
+        animation.target = this.$.timeSelectorContainer;
+        animation.play();
+
         this.$.timeSelector.bookingTimeslots = this.bookingTimeslots;
       },
 
@@ -138,20 +165,21 @@ Custom web element displays a provided date and time schedule with ability to se
         this.dates = [];
         this.bookingTimeslots = [];
         this.maxBookingLength = 0;
+        this.booked = false;
 
         this.generateDates();
       },
 
       generateDates: function() {
-        var today = new Date();
+        var today = moment(new Date()).isBefore(this.searchDate) ? new Date() : this.searchDate;
         today.setHours(this.searchDate.getHours(), this.searchDate.getMinutes(), 0, 0);
 
         var timeDifference = Math.abs(moment(today).diff(moment(this.maxBookingDate)));
-        var daysCount = moment.duration(timeDifference).asDays();
+        var daysCount = parseInt(moment.duration(timeDifference).asDays());
 
         this.dates = [];
 
-        for(var i=0; i <= daysCount; i++) {
+        for(var i=0; i < daysCount; i++) {
           this.dates.push(moment(today).add({day: i}).toDate());
         }
       }
