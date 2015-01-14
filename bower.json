@@ -1,0 +1,7 @@
+{
+  "name": "uqlibrary-date-selector#gh-pages",
+  "private": true,
+  "dependencies": {
+    "uqlibrary-date-selector": "uqlibrary/uqlibrary-date-selector#master"
+  }
+}
