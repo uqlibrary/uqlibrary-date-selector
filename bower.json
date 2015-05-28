@@ -18,6 +18,7 @@
     "moment": "~2.8.4"
   },
   "devDependencies": {
-    "web-component-tester": "Polymer/web-component-tester#^1.6.1"
+    "webcomponentsjs": "webcomponents/webcomponentsjs#0.5.4",
+    "web-component-tester": "Polymer/web-component-tester#2.0.5"
   }
 }
