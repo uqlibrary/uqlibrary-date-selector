@@ -1,0 +1,54 @@
+<link rel="import" href="elements.html">
+<!--
+Element provides slide-show display for paper checkboxes, touch enabled
+
+##### Example
+
+    <uqlibrary-time-selector></uqlibrary-time-selector>
+     <script>
+      (function () {
+
+        window.addEventListener('polymer-ready', function() {
+            var time_selector = document.querySelector('uqlibrary-time-selector');
+
+            time_selector.maxBookingLength = 4;
+            time_selector.timeslots = [
+                {
+                    startTime : new Date(Fri Nov 21 2014 00:00:00 GMT+1000 (AEST)),
+                    endTime : new Date(Fri Nov 21 2014 00:30:00 GMT+1000 (AEST)),
+                    selectable: true,
+                    selected: false
+                },
+                {
+                    startTime : new Date(Fri Nov 21 2014 00:30:00 GMT+1000 (AEST)),
+                    endTime : new Date(Fri Nov 21 2014 01:00:00 GMT+1000 (AEST)),
+                    selectable: true,
+                    selected: false
+                }
+            ];
+            }());
+    </script>
+
+@element uqlibrary-time-selector
+@blurb Element provides display of time slots, indicating available and busy time slots, with ability to select time slots
+@status alpha
+@homepage http://uqlibrary.github.io/uqlibrary-date-selector
+-->
+
+<dom-module id="uqlibrary-time-selector">
+  <template>
+    <div class="items">
+      <template is="dom-repeat" items="{{bookingTimeslots}}">
+        {{item.startTime}}
+
+        <!--<paper-button id="{{_computeId(index)}}" on-click="timeslotChanged" class$="{{_computeClass(timeslot)}}" disabled$="{{!timeslot.selectable}}" aria-disabled$="{{!timeslot.selectable}}" data-index$="{{index}}">-->
+
+          <!--<span>{{formatTime ( timeslot.startTime)}}</span>-->
+
+        <!--</paper-button>-->
+
+      </template>
+    </div>
+  </template>
+  <script src="uqlibrary-time-selector.js"></script>
+</dom-module>

@@ -1,0 +1,104 @@
+<link rel="import" href="elements.html">
+
+<!--
+
+Custom web element displays a provided date and time schedule with ability to select time slots
+
+##### Example
+
+    <uqlibrary-date-selector></uqlibrary-date-selector>
+
+     <script>
+      (function () {
+
+        window.addEventListener('polymer-ready', function() {
+            var date_selector = document.querySelector('uqlibrary-date-selector');
+
+            date_selector.searchDate = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
+            date_selector.maxBookingDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+            date_selector.maxBookingLength = 4;
+            date_selector.bookingTimeslots = [
+                 {
+                    startTime : new Date(Fri Nov 21 2014 00:00:00 GMT+1000 (AEST)),
+                    endTime : new Date(Fri Nov 21 2014 00:30:00 GMT+1000 (AEST)),
+                    selectable: true,
+                    selected: false
+                },
+                {
+                    startTime : new Date(Fri Nov 21 2014 00:30:00 GMT+1000 (AEST)),
+                    endTime : new Date(Fri Nov 21 2014 01:00:00 GMT+1000 (AEST)),
+                    selectable: true,
+                    selected: false
+                }
+            ];
+            }());
+    </script>
+
+@element uqlibrary-date-selector
+@blurb Custom web element displays a provided date and time schedule with ability to select time slots
+@status alpha
+@homepage http://uqlibrary.github.io/uqlibrary-date-selector
+
+-->
+<dom-module id="uqlibrary-date-selector">
+  <style is="custom-style" include="common-styles">
+    #items {
+      @apply(--layout-horizontal);
+      @apply(--layout-center);
+    }
+
+    /* Tab styles */
+    paper-tabs {
+      height: 80px;
+    }
+
+    paper-tab .tab {
+      @apply(--layout-vertical);
+      color: var(--secondary-color);
+      text-align: center;
+    }
+
+    paper-tab.iron-selected .tab {
+      color: var(--text-color);
+    }
+
+    paper-tab .tab .date {
+      border-radius: 50%;
+      height: 40px;
+      width: 40px;
+      line-height: 40px;
+      text-align: center;
+    }
+
+    paper-tab.iron-selected .tab .date {
+      border-radius: 50%;
+      background-color: var(--accent-color);
+      color: var(--text-color-inverse);
+    }
+
+    /* Text Styles */
+    .selected-date {
+      text-align: center;
+    }
+  </style>
+  <template>
+    <style is="custom-style" include="common-styles"></style>
+
+    <paper-tabs id="items" selected="{{ _selectedDateIndex }}" on-iron-select="_dateSelected" scrollable no-bar>
+      <template is="dom-repeat" items="{{_dates}}">
+        <paper-tab class="item">
+          <div class="tab">
+            <div class="dayOfWeek">{{_dayOfWeek(item)}}</div>
+            <div class="date">{{_dayOfMonth(item)}}</div>
+          </div>
+        </paper-tab>
+      </template>
+    </paper-tabs>
+
+    <div class="selected-date subhead">{{_selectedDateFormatted}}</div>
+
+    <uqlibrary-time-selector id="time" max-booking-length="{{maxBookingLength}}"></uqlibrary-time-selector>
+
+  </template>
+  <script src="uqlibrary-date-selector.js"></script>
+</dom-module>
