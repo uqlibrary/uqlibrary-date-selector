@@ -1,0 +1,65 @@
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>uql-date-selector</title>
+
+  <script src="../../webcomponentsjs/webcomponents.min.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../test-fixture/test-fixture-mocha.js"></script>
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+
+  <!-- Import the element to test -->
+  <link rel="import" href="../elements/uqlibrary-date-selector.html">
+
+</head>
+<body>
+
+<test-fixture id="basic">
+  <template>
+    <uqlibrary-date-selector></uqlibrary-date-selector>
+  </template>
+</test-fixture>
+
+<script>
+  var bookingDate = new Date(2014, 0, 1, 11, 0, 0, 0);
+  var maxBookingDate = new Date(2014, 0, 7, 11, 0, 0, 0);
+  var maxBookingLength = 3;
+
+  suite('<uqlibrary-date-selector> tests', function () {
+    var element;
+
+    setup(function () {
+      element = fixture('basic');
+      element.searchDate = new Date(bookingDate.valueOf());
+      element.maxBookingDate = new Date(maxBookingDate.valueOf());
+      element.maxBookingLength = maxBookingLength;
+    });
+
+    test('should have loaded the booking date properly', function () {
+      expect(element.searchDate.valueOf()).to.be.equal(bookingDate.valueOf());
+    });
+
+    test('should have loaded the max booking date properly', function () {
+      expect(element.maxBookingDate.valueOf()).to.be.equal(maxBookingDate.valueOf());
+    });
+
+    test('should have loaded the max booking length properly', function () {
+      expect(element.maxBookingLength).to.be.equal(maxBookingLength);
+    });
+
+    test('should generate the right amount of days to display', function () {
+      var ticksInADay = 60 * 60 * 24 * 1000;
+      var daysDifference = parseInt((maxBookingDate.valueOf() - bookingDate.valueOf())/ticksInADay);
+
+      element._generateDates();
+
+      expect(element._dates.length).to.be.equal(daysDifference);
+    });
+
+  });
+</script>
+
+</body>
+</html>
