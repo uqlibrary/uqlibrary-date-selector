@@ -8,8 +8,7 @@
       bookingTimeSlots: {
         type: Array,
         value: [],
-        notify: true,
-        observer: '_bookingTimeSlotsChanged'
+        notify: true
       },
       /**
        * The `maxBookingDate` attribute date indicates maximum possible booking date
@@ -61,10 +60,6 @@
       this.maxBookingLength = 0;
       this._generateDates();
     },
-    _bookingTimeSlotsChanged: function () {
-      console.log("SETTING BOOKING TIME SLOTS");
-      this.$.time.bookingTimeSlots = this._bookingTimeSlots;
-    },
     /**
      * Generates dates based on the searchDate and maxBookingDate
      * @private
@@ -103,12 +98,25 @@
     _dayOfMonth: function (date) {
       return moment(date).format('D');
     },
-    maxBookingDateChanged: function (newValue, oldValue) {
+    /**
+     * Called when the max booking date changes
+     */
+    maxBookingDateChanged: function () {
       this._generateDates();
-      // TODO: Set selected date
+
+      this._selectedDateIndex = this._dates.map(function(date) {
+        return date.toDateString();
+      }).indexOf(this.searchDate.toDateString());
     },
-    searchDateChanged: function (newValue, oldValue) {
-      // TODO: Set selected date
+    /**
+     * Called when the search date changes
+     */
+    searchDateChanged: function () {
+      this._generateDates();
+
+      this._selectedDateIndex = this._dates.map(function(date) {
+        return date.toDateString();
+      }).indexOf(this.searchDate.toDateString());
     },
     /**
      * Called when the user selects a date in paper-tabs

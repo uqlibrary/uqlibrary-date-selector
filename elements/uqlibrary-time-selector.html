@@ -37,15 +37,42 @@ Element provides slide-show display for paper checkboxes, touch enabled
 
 <dom-module id="uqlibrary-time-selector">
   <template>
+    <style is="custom-style" include="common-styles">
+      :host {
+        font-size: var(--body-font-size);
+      }
+
+      .items {
+        padding: 16px;
+      }
+
+      paper-button {
+        min-width: 30px;
+        width: 90px;
+        padding: 25px 10px;
+        margin: 1px;
+        text-align: center;
+        background-color: var(--secondary-color-light);
+      }
+
+      paper-button.occupied-true {
+        background-color: var(--secondary-color);
+        color: var(--text-color-inverse);
+      }
+
+      paper-button.selected-true {
+        background-color: var(--accent-color);
+        color: var(--text-color-inverse);
+      }
+    </style>
     <div class="items">
-      <template is="dom-repeat" items="{{bookingTimeslots}}">
-        {{item.startTime}}
-
-        <!--<paper-button id="{{_computeId(index)}}" on-click="timeslotChanged" class$="{{_computeClass(timeslot)}}" disabled$="{{!timeslot.selectable}}" aria-disabled$="{{!timeslot.selectable}}" data-index$="{{index}}">-->
-
-          <!--<span>{{formatTime ( timeslot.startTime)}}</span>-->
-
-        <!--</paper-button>-->
+      <template id="repeatItems" is="dom-repeat" items="[[bookingTimeSlots]]">
+        <paper-button on-click="_timeSlotChanged"
+                      class$="caption selected-[[item.selected]] occupied-[[!item.selectable]]"
+                      disabled$="[[!item.selectable]]"
+                      aria-disabled$="[[!item.selectable]]">
+          [[formatTime(item.startTime)]]
+        </paper-button>
 
       </template>
     </div>

@@ -8,8 +8,7 @@
       bookingTimeSlots: {
         type: Array,
         value: [],
-        notify: true,
-        observer: '_bookingTimeSlotsChanged'
+        notify: true
       },
       /**
        * The `maxBookingLength` attribute is an int - indicates maximum number of time slots per booking
@@ -21,53 +20,64 @@
       },
       timeslot: { observer: 'timeslotChanged' }
     },
-    formatTime: function (timeslotValue) {
-      return moment(timeslotValue).format('hh:mm a');
+    /**
+     * Formats the time slot for viewing
+     * @param timeSlotValue
+     * @returns {*}
+     */
+    formatTime: function (timeSlotValue) {
+      return moment(timeSlotValue).format('hh:mm a');
     },
-    _bookingTimeSlotsChanged: function () {
-      console.log(this.bookingTimeSlots);
-    },
-    timeslotChanged: function (data, event, source) {
-      console.log("CHANGED");
-      var selectedIndex = source.attributes['data-index'].value;
-      if (this.isTimeslotChangeValid(selectedIndex)) {
-        this.set('bookingTimeslots' + ('.' + selectedIndex) + '.selected', !this.bookingTimeslots[selectedIndex].selected);
-        this.fire('time-selector-changed', {
-          bookingTimeslots: this.bookingTimeslots,
-          changedIndex: selectedIndex
-        });
+    /**
+     * Called when a time slot has been selected
+     * @param e
+     * @private
+     */
+    _timeSlotChanged: function (e) {
+      var selectedIndex = e.model.index;
+      var selectedItem = e.model.item;
+
+      // Check if the time slot change is valid
+      if (this._timeSlotChangeValid(selectedIndex)) {
+        selectedItem.selected = !selectedItem.selected;
+
+        // This is required for Polymer to update this object and bubble it up
+        this.bookingTimeSlots = this.bookingTimeSlots.slice();
+        this.notifyPath('bookingTimeSlots.' + selectedIndex + '.selected', selectedItem.selected);
       }
     },
-    isTimeslotChangeValid: function (index) {
-      index = parseInt(index);
-      var currentTimeslot = this.bookingTimeslots[index];
-      var prevTimeslot = index > 0 ? this.bookingTimeslots[index - 1] : null;
-      var nextTimeslot = index + 1 < this.bookingTimeslots.length ? this.bookingTimeslots[index + 1] : null;
-      // get currently selected elements
-      var selectedTimeslots = this.bookingTimeslots.filter(function (item) {
-        return item.selected;
-      });
-      if (!currentTimeslot.selectable) {
-        //cannot select or deselect unavailable time slots
-        return false;
-      } else if (selectedTimeslots.length == 0) {
-        // valid if first timeslot selected
-        return true;
-      } else if (this.bookingTimeslots[index].selected) {
-        // valid if current timeslot is deselected not from the middle of selection
-        return !(prevTimeslot && prevTimeslot.selected && nextTimeslot && nextTimeslot.selected);
-      } else if (prevTimeslot && prevTimeslot.selected || nextTimeslot && nextTimeslot.selected) {
-        // valid if selected time slot is next to previously selected time slots
-        // valid if total number of timeslots selections does not exceed max booking length
-        return this.maxBookingLength == 0 || selectedTimeslots.length + 1 <= this.maxBookingLength;
+    /**
+     * Checks whether this time slot can be selected
+     * @param index
+     * @private
+     */
+    _timeSlotChangeValid: function (index) {
+      // Get previous and next time slots
+      var item = this.bookingTimeSlots[index];
+      var previous = (index > 0 ? this.bookingTimeSlots[index - 1] : null);
+      var next = ((index + 1) < this.bookingTimeSlots.length ? this.bookingTimeSlots[index + 1] : null);
+
+      var selectedItems = _.filter(this.bookingTimeSlots, function (value) { return value.selected; });
+
+      // Check if the item is selectable
+      if (!item.selectable) return false;
+
+      if (item.selected) {
+        // User wants to deselect, make sure it is not in the middle of the selected area
+        return !(previous && previous.selected && next && next.selected);
+      } else {
+        // User wants to select this item
+        // If no elements have been selected, it is valid
+        if (selectedItems.length == 0) return true;
+
+        // Make sure at least one time slot next to this item is selected
+        if (previous && previous.selected || next && next.selected) {
+          // Make sure we are not at the max booking length
+          return (this.maxBookingLength == 0 || selectedItems.length + 1 <= this.maxBookingLength);
+        } else {
+          return false;
+        }
       }
-      return false;
-    },
-    _computeId: function (index) {
-      return 'timeslot' + index;
-    },
-    _computeClass: function (timeslot) {
-      return 'item selected-' + timeslot.selected + ' occupied-' + !timeslot.selectable;
     }
   });
 })();
