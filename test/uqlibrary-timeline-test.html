@@ -1,0 +1,101 @@
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>uql-timeline</title>
+
+  <script src="../../webcomponentsjs/webcomponents.min.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../test-fixture/test-fixture-mocha.js"></script>
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+
+  <!-- Import the element to test -->
+  <link rel="import" href="../elements/uqlibrary-timeline.html">
+
+</head>
+<body>
+
+<test-fixture id="basic">
+  <template>
+    <uqlibrary-timeline auto-load="false"></uqlibrary-timeline>
+  </template>
+</test-fixture>
+
+<script>
+  var data = [
+    {
+      id:       1,
+      startDate:new Date(new Date().setHours(0, 0, 0, 0)),
+      endDate:  new Date(new Date().setHours(0, 30, 0, 0)),
+      title:    "Item title 1",
+      subtitle: "Second line"
+    },
+    {
+      id:       2,
+      startDate:new Date(new Date().setHours(15, 0, 0, 0)),
+      endDate:  new Date(new Date().setHours(15, 30, 0, 0)),
+      title:    "Item title 2",
+      subtitle: "Second line"
+    },
+    {
+      id:       3,
+      startDate:new Date(new Date().setHours(26, 0, 0, 0)),
+      endDate:  new Date(new Date().setHours(27, 0, 0, 0)),
+      title:    "A long item title A long item title A long item title A long item title A long item title ",
+      subtitle: "Second line"
+    }];
+
+  suite('<uqlibrary-timeline> tests', function () {
+    var element;
+
+    setup(function () {
+      element = fixture('basic');
+      element.events = data;
+    });
+
+    test('should have three events in data', function(done) {
+      setTimeout(function() {
+        expect(element.events.length).to.be.equal(3);
+        done();
+      }, 500);
+    });
+
+    test('should have three events on display', function(done) {
+      setTimeout(function () {
+        var eventsDisplay = document.querySelectorAll('.event-container');
+
+        expect(eventsDisplay.length).to.be.equal(3);
+        done();
+      }, 500);
+    });
+
+    test('should have a divider', function(done) {
+      expect(document.querySelectorAll('.current-line')).to.not.null;
+
+      done();
+    });
+
+    test('should add events to the display', function (done) {
+
+      setTimeout(function () {
+        expect(element.events.length).to.be.equal(4);
+        var eventsDisplay = document.querySelectorAll('.event-container');
+        expect(eventsDisplay.length).to.be.equal(4);
+        done();
+      }, 1000);
+
+      element.push('events', {
+        id:       4,
+        startDate:new Date(new Date().setHours(49, 0, 0, 0)),
+        endDate:  new Date(new Date().setHours(50, 0, 0, 0)),
+        title:    "New Item title",
+        subtitle: "Second line"
+      });
+    })
+
+  });
+</script>
+
+</body>
+</html>

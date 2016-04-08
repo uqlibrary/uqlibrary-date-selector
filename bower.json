@@ -14,13 +14,9 @@
     "paper-elements": "Polymerelements/paper-elements#*",
     "iron-elements": "Polymerelements/iron-elements#*",
     "moment": "*",
-    "uqlibrary-styles": "uqlibrary/uqlibrary-styles#master",
-    "lodash": "^4.8.2"
+    "uqlibrary-styles": "uqlibrary/uqlibrary-styles#master"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#*"
-  },
-  "resolutions": {
-    "lodash": "^4.8.2"
   }
 }
