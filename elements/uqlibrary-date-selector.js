@@ -41,12 +41,6 @@
         value: []
       },
       /**
-       * Selected date
-       */
-      _selectedDate: {
-        type: Date
-      },
-      /**
        * Index of the currently selected date tab
        */
       _selectedDateIndex: {
@@ -124,8 +118,8 @@
      * @private
      */
     _dateSelected: function (e) {
-      this._selectedDate = this._dates[this._selectedDateIndex];
-      this._selectedDateFormatted = moment(this._selectedDate).format('dddd MMM DD, YYYY');
+      this.searchDate = this._dates[this._selectedDateIndex];
+      this._selectedDateFormatted = moment(this.searchDate).format('dddd MMM DD, YYYY');
     }
   });
 })();
