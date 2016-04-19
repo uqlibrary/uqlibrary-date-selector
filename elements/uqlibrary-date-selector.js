@@ -31,7 +31,7 @@
       searchDate: {
         type: Date,
         notify: true,
-        observer: 'searchDateChanged'
+        observer: '_formatDate'
       },
       /**
        * List of available dates
@@ -48,17 +48,12 @@
         value: 0
       }
     },
-    ready: function () {
-      this.searchDate = new Date();
-      this.maxBookingDate = moment(this.searchDate).add(1, "d").toDate();
-      this.maxBookingLength = 0;
-      this._generateDates();
-    },
     /**
      * Generates dates based on the searchDate and maxBookingDate
      * @private
      */
     _generateDates: function () {
+      if (!this.searchDate) { return; }
       // Get today's date and time (or searchDate)
       var today = moment(new Date()).isBefore(this.searchDate) ? new Date() : this.searchDate;
       today.setHours(this.searchDate.getHours(), this.searchDate.getMinutes(), 0, 0);
@@ -96,6 +91,7 @@
      * Called when the max booking date changes
      */
     maxBookingDateChanged: function () {
+      if (!this.searchDate) { return; }
       this._generateDates();
 
       this._selectedDateIndex = this._dates.map(function(date) {
@@ -118,7 +114,16 @@
      * @private
      */
     _dateSelected: function (e) {
-      this.searchDate = this._dates[this._selectedDateIndex];
+      if (moment(this.searchDate).format("YYYY-MM-DD") != moment(this._dates[this._selectedDateIndex]).format("YYYY-MM-DD")) {
+        this.searchDate = this._dates[this._selectedDateIndex];
+      }
+    },
+    /**
+     * Formats the search date when it is updated
+     * @param e
+     * @private
+     */
+    _formatDate: function (e) {
       this._selectedDateFormatted = moment(this.searchDate).format('dddd MMM DD, YYYY');
     }
   });
