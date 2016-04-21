@@ -21,6 +21,15 @@
       timeslot: { observer: 'timeslotChanged' }
     },
     /**
+     * Returns an aria label for a time slot
+     * @param item
+     * @returns {string}
+     * @private
+     */
+    _ariaLabel: function (item) {
+      return this.formatTime(item.startTime) + " - " + (item.selected ? "" : "not ") + "selected";
+    },
+    /**
      * Formats the time slot for viewing
      * @param timeSlotValue
      * @returns {*}
@@ -44,6 +53,9 @@
         // This is required for Polymer to update this object and bubble it up
         this.bookingTimeSlots = this.bookingTimeSlots.slice();
         this.notifyPath('bookingTimeSlots.' + selectedIndex + '.selected', selectedItem.selected);
+      } else {
+        this.$.toast.text = "Time slot cannot be selected";
+        this.$.toast.show();
       }
     },
     /**

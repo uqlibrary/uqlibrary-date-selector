@@ -67,7 +67,8 @@ Element provides slide-show display for paper checkboxes, touch enabled
     </style>
     <div class="items">
       <template id="repeatItems" is="dom-repeat" items="[[bookingTimeSlots]]">
-        <paper-button on-click="_timeSlotChanged"
+        <paper-button aria-label$="[[_ariaLabel(item)]]"
+                      on-click="_timeSlotChanged"
                       class$="caption selected-[[item.selected]] occupied-[[!item.selectable]]"
                       disabled$="[[!item.selectable]]"
                       aria-disabled$="[[!item.selectable]]">
@@ -76,6 +77,8 @@ Element provides slide-show display for paper checkboxes, touch enabled
 
       </template>
     </div>
+
+    <paper-toast id="toast"></paper-toast>
   </template>
   <script src="uqlibrary-time-selector.js"></script>
 </dom-module>
