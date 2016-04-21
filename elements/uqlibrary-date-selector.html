@@ -85,11 +85,11 @@ Custom web element displays a provided date and time schedule with ability to se
     <style is="custom-style" include="common-styles"></style>
 
     <paper-tabs id="items" selected="{{ _selectedDateIndex }}" on-iron-select="_dateSelected" scrollable no-bar>
-      <template is="dom-repeat" items="{{_dates}}">
-        <paper-tab class="item">
+      <template is="dom-repeat" items="[[_dates]]">
+        <paper-tab class="item" aria-label$="[[_ariaLabel(item)]]">
           <div class="tab">
-            <div class="dayOfWeek">{{_dayOfWeek(item)}}</div>
-            <div class="date">{{_dayOfMonth(item)}}</div>
+            <div class="dayOfWeek">[[_dayOfWeek(item)]]</div>
+            <div class="date">[[_dayOfMonth(item)]]</div>
           </div>
         </paper-tab>
       </template>

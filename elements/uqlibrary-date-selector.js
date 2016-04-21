@@ -70,6 +70,15 @@
       this._dates = dates;
     },
     /**
+     * Returns a proper aria label for this date
+     * @param date
+     * @returns {string}
+     * @private
+     */
+    _ariaLabel: function (date) {
+      return moment(date).format("dddd, D MMMM");
+    },
+    /**
      * Returns the "day of the week letter" for the given date
      * @param date
      * @returns {*}
