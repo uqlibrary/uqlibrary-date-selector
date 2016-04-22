@@ -64,6 +64,12 @@ Element provides slide-show display for paper checkboxes, touch enabled
         background-color: var(--accent-color);
         color: var(--text-color-inverse);
       }
+
+      @media all and (max-width: 748px) {
+        .items {
+          text-align: center;
+        }
+      }
     </style>
     <div class="items">
       <template id="repeatItems" is="dom-repeat" items="[[bookingTimeSlots]]">
