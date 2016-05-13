@@ -57,14 +57,18 @@
       // Get today's date and time (or searchDate)
       var today = moment(new Date()).isBefore(this.searchDate) ? new Date() : this.searchDate;
       today.setHours(this.searchDate.getHours(), this.searchDate.getMinutes(), 0, 0);
+      today = moment(today);
 
-      // Get days difference
-      var timeDifference = Math.abs(moment(today).diff(moment(this.maxBookingDate)));
-      var daysCount = parseInt(moment.duration(timeDifference).asDays());
+      var maxDateFormatted = moment(this.maxBookingDate).format("YYYY-MM-DD");
 
+      var go = true;
       var dates = [];
-      for (var i = 0; i < daysCount; i++) {
-        dates.push(moment(today).add(i, "day").toDate());
+      while (go) {
+        dates.push(today.clone().toDate());
+        today.add(1, "day");
+        if (today.format("YYYY-MM-DD") > maxDateFormatted) {
+          go = false;
+        }
       }
 
       this._dates = dates;
