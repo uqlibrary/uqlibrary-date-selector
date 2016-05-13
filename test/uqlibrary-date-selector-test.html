@@ -50,12 +50,9 @@
     });
 
     test('should generate the right amount of days to display', function () {
-      var ticksInADay = 60 * 60 * 24 * 1000;
-      var daysDifference = parseInt((maxBookingDate.valueOf() - bookingDate.valueOf())/ticksInADay);
-
       element._generateDates();
 
-      expect(element._dates.length).to.be.equal(daysDifference);
+      expect(element._dates.length).to.be.equal(7);
     });
 
   });
