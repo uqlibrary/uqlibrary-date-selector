@@ -84,7 +84,7 @@
 
     test('should allow selecting a consecutive timeslot', function () {
       element.bookingTimeSlots[0].selected = true;
-      expect(element._timeSlotChangeValid(2)).to.be.equal(true);
+      expect(element._timeSlotChangeValid(1)).to.be.equal(true);
     });
 
     test('should not allow selecting a non-consecutive timeslot', function () {
