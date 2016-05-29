@@ -47,15 +47,16 @@
       var selectedItem = e.model.item;
 
       // Check if the time slot change is valid
-      if (this._timeSlotChangeValid(selectedIndex)) {
+      result = this._timeSlotChangeValid(selectedIndex);
+      if (true === result) {
         selectedItem.selected = !selectedItem.selected;
 
         // This is required for Polymer to update this object and bubble it up
         this.bookingTimeSlots = this.bookingTimeSlots.slice();
         this.notifyPath('bookingTimeSlots.' + selectedIndex + '.selected', selectedItem.selected);
       } else {
-        this.$.toast.text = "Time slot cannot be selected";
-        this.$.toast.show();
+          this.$.toast.text = result;
+          this.$.toast.show();
       }
     },
     /**
@@ -72,24 +73,37 @@
       var selectedItems = _.filter(this.bookingTimeSlots, function (value) { return value.selected; });
 
       // Check if the item is selectable
-      if (!item.selectable) return false;
+      result = true;
+      if (!item.selectable) {
+        result = "Time slot cannot be selected";
+      }
 
-      if (item.selected) {
-        // User wants to deselect, make sure it is not in the middle of the selected area
-        return !(previous && previous.selected && next && next.selected);
-      } else {
-        // User wants to select this item
-        // If no elements have been selected, it is valid
-        if (selectedItems.length == 0) return true;
-
-        // Make sure at least one time slot next to this item is selected
-        if (previous && previous.selected || next && next.selected) {
-          // Make sure we are not at the max booking length
-          return (this.maxBookingLength == 0 || selectedItems.length + 1 <= this.maxBookingLength);
+      if (true == result) {
+        if (item.selected) {
+          // User wants to deselect, make sure it is not in the middle of the selected area
+          if (previous && previous.selected && next && next.selected) {
+            result = "You cannot turn off a time slot in the middle of the time block";
+          }
         } else {
-          return false;
+          // User wants to select this item
+          // If no elements have been selected, it is valid
+          if (selectedItems.length > 0) {
+
+            // Make sure at least one time slot next to this item is selected
+            if (previous && previous.selected || next && next.selected) {
+              if (this.maxBookingLength != 0 && selectedItems.length + 1 > this.maxBookingLength) {
+                // max booking length reached
+                result = "Maximum Length of booking reached"
+              }
+            } else {
+              // non contiguous time selected
+              result = "Create a second booking to choose a second block of time";
+            }
+          }
         }
       }
+      return result;
     }
   });
+
 })();
