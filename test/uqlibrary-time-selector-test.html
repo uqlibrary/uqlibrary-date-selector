@@ -75,43 +75,51 @@
     });
 
     test('should properly invalidate an "unselectable" timeslot', function () {
-      expect(element._timeSlotChangeValid(4)).to.be.equal("Time slot cannot be selected");
+      var result = element._timeSlotChangeValid(4);
+      expect(result.errorMessage).to.be.equal("Time slot cannot be selected");
     });
 
     test('should allow selecting the first timeslot', function () {
-      expect(element._timeSlotChangeValid(0)).to.be.equal(true);
+      var result = element._timeSlotChangeValid(0);
+      expect(result.isValid).to.be.equal(true);
     });
 
     test('should allow selecting a consecutive timeslot', function () {
       element.bookingTimeSlots[0].selected = true;
-      expect(element._timeSlotChangeValid(1)).to.be.equal(true);
+      var result = element._timeSlotChangeValid(1);
+      expect(result.isValid).to.be.equal(true);
     });
 
     test('should not allow selecting a non-consecutive timeslot', function () {
       element.bookingTimeSlots[0].selected = true;
-      expect(element._timeSlotChangeValid(2)).to.be.equal("Create a second booking to choose a second block of time");
+      var result = element._timeSlotChangeValid(2);
+      expect(result.errorMessage).to.be.equal("Turn off the current time slot(s) to pick a new time");
     });
 
     test('should not allow selected more items than the maxBookingLength', function () {
       element.bookingTimeSlots[0].selected = true;
       element.bookingTimeSlots[1].selected = true;
       element.bookingTimeSlots[2].selected = true;
-      expect(element._timeSlotChangeValid(3)).to.be.equal("Maximum Length of booking reached");
+      var result = element._timeSlotChangeValid(3);
+      expect(result.errorMessage).to.be.equal("Maximum length of booking reached");
     });
 
     test('should allow deselecting items at the edge of a selection', function () {
       element.bookingTimeSlots[0].selected = true;
       element.bookingTimeSlots[1].selected = true;
       element.bookingTimeSlots[2].selected = true;
-      expect(element._timeSlotChangeValid(0)).to.be.equal(true);
-      expect(element._timeSlotChangeValid(2)).to.be.equal(true);
+      var result1 = element._timeSlotChangeValid(0);
+      expect(result1.isValid).to.be.equal(true);
+      var result2 = element._timeSlotChangeValid(2);
+      expect(result2.isValid).to.be.equal(true);
     });
 
     test('should not allow deselecting items in the middle of a selection', function () {
       element.bookingTimeSlots[0].selected = true;
       element.bookingTimeSlots[1].selected = true;
       element.bookingTimeSlots[2].selected = true;
-      expect(element._timeSlotChangeValid(1)).to.be.equal("You cannot turn off a time slot in the middle of the time block");
+      var result = element._timeSlotChangeValid(1);
+      expect(result.errorMessage).to.be.equal("Bookings must be continuous timeslots");
     });
 
   });
